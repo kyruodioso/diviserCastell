@@ -7,10 +7,12 @@ class Bootloader extends Phaser.Scene{
   }
   preload(){
     this.load.path = './assets/';
+    this.load.image('container_data','environment/container_data.png')
     this.load.spritesheet('hero_walk','warrior/spr_Walk_strip.png',{
       frameWidth:170,
       frameHeight:96,
     });
+
   }
   create(){
     //codigos del teclado
@@ -20,9 +22,16 @@ class Bootloader extends Phaser.Scene{
      //Se asignan las teclas para el manejo del heroe
      this.key_right= this.input.keyboard.addKey(keyCodes.RIGHT);
 
-  
+    //elementos de pantalla
+    this.container_data= this.add.image(200,60,'container_data')
+    this.text_data_point=this.add.text(60,60, 'POINT 0',{
+      fontsize:30
+    })
+    this.text_data_power=this.add.text(60,40, 'POWER 0',{
+      fontsize:30
+    })
     //se suma al heroe
-    this.hero_walk=this.add.sprite(100,200, 'hero_walk',2).setScale(2);
+    this.hero_walk=this.add.sprite(100,200, 'hero_walk',2).setScale(2).setDepth(2);
  
    this.anims.create({
       key:'hero_walking',
@@ -42,11 +51,20 @@ class Bootloader extends Phaser.Scene{
     this.key_right.on('down',()=>{
       this.hero_walk.anims.play('hero_walking');
      })
-
     
+     //contenedor de los datos del heroe
+     const container = this.add.container(0,-300);
+     container.add([
+      this.container_data,
+      this.text_data_point,
+      this.text_data_power
+     ]);
 
-     
-    
+     this.add.tween({
+      targets:[container],
+      ease:'Bounce',
+      y:10
+     })
   }
   udpate(){
 
